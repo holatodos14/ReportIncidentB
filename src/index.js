@@ -1,12 +1,13 @@
 import express from 'express'
 import morgan from 'morgan'
 import { PORT } from './config/config.js'
-import users from './routes/users.routes.js'
-import incidentsRouter from './routes/incident.routes.js'
-import commentsRouter from './routes/comment.routes.js'
 import http from 'http'
 import { Server } from 'socket.io'
 import { validateCORS } from './middlewares/middleware.js'
+
+import usersRoutes from './routes/users.routes.js'
+import incidentsRoutes from './routes/incident.routes.js'
+import commentsRoutes from './routes/comment.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import imageRoutes from './routes/images.routes.js'
 
@@ -25,10 +26,10 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(validateCORS)
 
-app.use('/api/users', users)
+app.use('/api/users', usersRoutes)
 app.use('/api/auth', authRoutes)
-app.use('/api/incidents', incidentsRouter)
-app.use('/api/comments', commentsRouter)
+app.use('/api/incidents', incidentsRoutes)
+app.use('/api/comments', commentsRoutes)
 app.use('/api/images', imageRoutes)
 
 io.on('connection', (socket) => {
@@ -42,4 +43,6 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`))
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`)
+})
